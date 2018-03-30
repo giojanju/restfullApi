@@ -4,9 +4,15 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Traits\ApiResponser;
+use Illuminate\Database\QueryException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -57,10 +63,30 @@ class Handler extends ExceptionHandler
             $modelName = strtolower(class_basename($exception->getModel()));
             return $this->errorResponse("Dose not exists any {$modelName} with the specofoed identificator", 404);
         }
-        return parent::render($request, $exception);
+        if ($exception instanceof AuthenticationException) {
+            return $thiss->unauthenticated($exception, $request);
+        }
+        if ($exception instanceof AuthorizationException) {
+            return $this->errorResponse($exception->getMessage(), 403);
+        }
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->errorResponse("The specified Url can not be found", 404);
+        }
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return $this->errorResponse("The specified Method invalid", 405);
+        }
+        if ($exception instanceof HttpException) {
+            return $this->errorResponse($exception->getMessage(), $exception->getStatusCode());
+        }
+
+        if (config('app.debug')) {
+            return parent::render($request, $exception);
+        }
+
+        return $this->errorResponse('Unexpected Exception. Try later', 500);
     }
 
-    /**
+     /**
      * Create a response object from the given validation exception.
      *
      * @param  \Illuminate\Validation\ValidationException  $e
@@ -72,5 +98,17 @@ class Handler extends ExceptionHandler
         $errors = $e->validator->errors()->getMessages();
 
         return $this->errorResponse($errors, 422);
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+       return $this->errorResponse('Unauthenticated', 401);
     }
 }
