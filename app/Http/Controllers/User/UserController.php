@@ -100,14 +100,14 @@ class UserController extends ApiController
         }
         if ($request->has('admin')) {
             if (!$user->isVerified()) {
-                return $this->errorReponser('Only verified can modify the admin field', 409);
+                return $this->errorResponse('Only verified can modify the admin field', 409);
             }
 
             $user->admin = $request->admin;
         }
 
         if (!$user->isDirty()) {
-            return $this->errorReponser('You need to a specify different value tu update', 422);
+            return $this->errorResponse('You need to a specify different value tu update', 422);
         }
 
         $user->save();
