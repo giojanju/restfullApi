@@ -12,26 +12,34 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 /**
  * Buyers
  */
 Route::resource('buyers', 'Buyer\BuyerController', ['only' => ['index', 'show']]);
+
 /**
  * Sellers
  */
 Route::resource('sellers', 'Seller\SellerController', ['only' => ['index', 'show']]);
+
 /**
  * Category
  */
 Route::resource('categories', 'Category\CategoryController', ['except' => ['create', 'edit']]);
+
 /**
  * Products
  */
 Route::resource('products', 'Product\ProductController', ['only' => ['index', 'show']]);
+
 /**
  * transactions
  */
 Route::resource('transactions', 'Transaction\TransactionController', ['only' => ['index', 'show']]);
+Route::resource('transactions.categories', 'Transaction\TransactionCategoryController', ['only' => ['index']]);
+Route::resource('transactions.sellers', 'Transaction\TransactionSellerController', ['only' => ['index']]);
+
 /**
  * users
  */
