@@ -17,5 +17,7 @@ use App\Category;
 */
 
 Route::get('/', function () {
-    
+    $collection = User::all();
+    $sorted = $collection->sortBy('name');
+    return $sorted->values()->all();
 });
