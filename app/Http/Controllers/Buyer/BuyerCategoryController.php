@@ -8,19 +8,20 @@ use App\Http\Controllers\ApiController;
 
 class BuyerCategoryController extends ApiController
 {
+    protected $method;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Buyer $buyer)
-    {
-        $sellers = $buyer->transactions()->with('product.categories')
-            ->get()
-            ->pluck('product.categories')
-            ->collapse()
-            ->unique('id')
-            ->values();
-        return $this->showAll($sellers);
-    }
+    // public function index(Buyer $buyer)
+    // {
+    //     $sellers = $buyer->transactions()->with('product.categories')
+    //         ->get()
+    //         ->pluck('product.categories')
+    //         ->collapse()
+    //         ->unique('id')
+    //         ->values();
+    //     return $this->showAll($sellers);
+    // }
 }
