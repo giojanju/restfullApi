@@ -5,6 +5,7 @@ use App\Seller;
 use App\Product;
 use App\Category;
 
+// change
 /*
 |--------------------------------------------------------------------------
 | Web Routes
