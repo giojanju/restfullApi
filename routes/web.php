@@ -34,3 +34,9 @@ Route::get('/home', function () {
 
     // getting home information
 });
+
+
+// adding comments and function
+Route::get('/test-const', function () {
+    return 'ok work';
+});
