@@ -36,7 +36,3 @@ Route::get('/home', function () {
 });
 
 
-// adding comments and function
-Route::get('/test-const', function () {
-    return 'ok work';
-});
