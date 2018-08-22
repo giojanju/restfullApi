@@ -17,6 +17,12 @@ use App\Category;
 |
 */
 
+// add route
+
+Route::get('admin', function () {
+    return view('admin');
+});
+
 Route::get('/', function () {
     $collection = User::all();
     $sorted = $collection->sortBy('name');
