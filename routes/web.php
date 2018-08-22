@@ -28,3 +28,9 @@ Route::get('/', function () {
     $sorted = $collection->sortBy('name');
     return $sorted->values()->all();
 });
+
+Route::get('/home', function () {
+    return $sorted->values()->all();
+
+    // getting home information
+});
